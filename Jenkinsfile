@@ -12,6 +12,12 @@ pipeline {
             }
         }
 
+stage('Install Dependencies') {
+            steps {
+                bat 'npm install'
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Building React App...'
