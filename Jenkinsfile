@@ -33,5 +33,13 @@ stage('Install Dependencies') {
                 // We will skip actual testing for this specific moment.
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Frontend Container...'
+                // Notice we named it 'frontend-app' this time
+                bat 'docker build -t frontend-app .'
+            }
+        }
     }
 }
