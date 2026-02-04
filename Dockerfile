@@ -1,5 +1,5 @@
 # 1. Start with Node.js
-FROM node:18-alpine
+FROM node:22-alpine
 
 # 2. Set up the folder
 WORKDIR /app
