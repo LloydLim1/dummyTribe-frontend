@@ -12,9 +12,16 @@ pipeline {
             }
         }
 
-stage('Install Dependencies') {
+    stage('Install Dependencies') {
             steps {
                 bat 'npm install'
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                echo 'Running Frontend Tests...'
+                bat 'npm test'
             }
         }
 
