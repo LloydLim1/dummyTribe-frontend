@@ -2,7 +2,6 @@ pipeline {
     agent any
     
     tools {
-        // Ensure this matches your Jenkins Global Tool Configuration
         nodejs 'node-18' 
     }
     
@@ -21,7 +20,7 @@ pipeline {
 
         stage('Run Unit Tests') {
             steps {
-                // Vitest usually runs in watch mode by default, so we add --run to run it once
+                // Ensure Vitest runs once and exits
                 bat 'npm run test -- --run' 
             }
         }
@@ -31,16 +30,21 @@ pipeline {
                 script {
                     def scannerHome = tool 'sonar-scanner'
                     withSonarQubeEnv('sonar-server') {
-                        // Scan the src folder for the frontend project
                         bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=frontend-repo -Dsonar.sources=src"
                     }
                 }
             }
         }
         
-        stage('Build Docker Image') {
+        stage('Build & Push to Docker Hub') {
             steps {
-                bat 'docker build -t frontend-app .'
+                script {
+                    docker.withRegistry('', 'docker-hub-credentials') {
+                        // Build and Push the Frontend Image
+                        bat 'docker build -t lloydlim10/dummy-frontend:latest .'
+                        bat 'docker push lloydlim10/dummy-frontend:latest'
+                    }
+                }
             }
         }
     }
