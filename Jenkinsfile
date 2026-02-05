@@ -47,6 +47,18 @@ pipeline {
                 // Notice we named it 'frontend-app' this time
                 bat 'docker build -t frontend-app .'
             }
+
+            stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'sonar-scanner'
+                    withSonarQubeEnv('sonar-server') {
+                        // CHANGE: projectKey is now 'frontend-repo'
+                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=frontend-repo -Dsonar.sources=src"
+                    }
+                }
+            }
+        }
         }
     }
 }
